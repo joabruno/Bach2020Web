@@ -1,0 +1,115 @@
+﻿@{
+	ViewBag.Title = "Contact";
+	Layout = null;
+}
+
+<div class="canvas_navigation">
+	<div style="position: relative;">
+		<canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
+		<canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
+	</div>
+	<div>
+		<button style="height:50px;width:50px" onclick="up()">Up</button>
+		<button style="height:50px;width:50px" onclick="down()">Down</button>
+	</div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+	window.onresize = function () { location.reload(); }
+
+	var canvas1 = document.getElementById("canvas1");
+    var ctx1 = canvas1.getContext("2d");
+	//TODO innerheight gets too large value, so we subtract 17px for now.
+	canvas1.width = window.innerWidth - 17;
+	canvas1.height = window.innerHeight - 17;
+
+	console.log("canvas1 width: " + window.innerWidth)
+
+	var background = new Image();
+	background.src = "https://i.imgur.com/HbQqtZU.png";
+	var xOffset;
+	var yOffset;
+	var currentPosition = 1;
+	var destination = 9;
+	console.log("1st offset: " + xOffset)
+	background.onload = function () {
+		drawVisuals(currentPosition, destination);
+	}
+
+
+	//Updates the visual of the location
+	function drawVisuals(currentPosition, destination) {
+		var scale = background.width / background.height;
+		console.log(scale);
+		//ctx1.drawImage(background,0,0);
+		var newWidth = canvas1.width;
+		var newHeight = newWidth / scale;
+		if (newHeight > canvas1.height) {
+			newHeight = canvas1.height;
+			newWidth = newHeight * scale;
+		}
+		xOffset = newWidth < canvas1.width ? ((canvas1.width - newWidth) / 2) : 0;
+		yOffset = newHeight < canvas1.height ? ((canvas.height - newHeight) / 2) : 0;
+
+		ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
+
+		drawCircles(xOffset + newWidth / 2, newHeight / 10, 10, newWidth / 12, currentPosition, destination);
+	}
+
+
+
+	//Updates position every 5 seconds
+	const updater = window.setInterval(function () {
+		down();
+	}, 5000);
+	//Use clearInterval(updater); to stop the interval again
+
+	function up() {
+		console.log("up");
+		currentPosition--;
+		drawVisuals(currentPosition, destination);
+
+	}
+
+	function down() {
+		console.log("down");
+		currentPosition++;
+		drawVisuals(currentPosition, destination);
+	}
+
+	function drawCircles(x, y, numberOfCircles, circleRadius, currentPosition, destination) {
+		var canvas2 = document.getElementById("canvas2")
+		var ctx2 = canvas2.getContext("2d");
+		canvas2.width = window.innerWidth - 17;
+		canvas2.height = window.innerHeight - 17;
+		var i;
+
+		for (i = 1; i < numberOfCircles; i++) {
+
+			if (i == currentPosition) {
+				ctx2.beginPath();
+				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+				ctx2.fillStyle = "red";
+				ctx2.fill();
+				ctx2.stroke();
+			} else if (i == destination) {
+				ctx2.beginPath();
+				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+				ctx2.fillStyle = "green";
+				ctx2.fill();
+				ctx2.stroke();
+			} else if (currentPosition == destination) {
+				ctx2.font = "30px Arial";
+				ctx2.fillText("You have reached your destination", 10, 50);
+
+
+			} else {
+				ctx2.beginPath();
+				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+				ctx2.stroke();
+			}
+		}
+
+	}
+
+</script>

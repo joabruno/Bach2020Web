@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "FindOffice";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+
+<script>
+    var val = '@ViewBag.searchid';
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "oSearch": { "sSearch": val }
+        });
+    });
+    $(document).ready(function () {
+        
+        var table = $('.dataTable').DataTable();
+        $('.dataTable').on('click', 'tbody tr', function() {
+          console.log('API row values : ', table.row(this).data());
+        })
+    });
+</script>
+<div style="padding: 0px 4%">
+    <div>
+
+        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Research Area</th>
+                    <th>Office</th>
+                    <th>E-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Tiger</td>
+                    <td>System Architect</td>
+                    <td>Edinburgh</td>
+                    <td>t.nixon@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Garrett</td>
+                    <td>Accountant</td>
+                    <td>Tokyo</td>
+                    <td>g.winters@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Ashton</td>
+                    <td>Junior Technical Author</td>
+                    <td>San Francisco</td>
+                    <td>a.cox@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Cedric</td>
+                    <td>Senior Javascript Developer</td>
+                    <td>Edinburgh</td>
+                    <td>c.kelly@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Airi</td>
+                    <td>Accountant</td>
+                    <td>Tokyo</td>
+                    <td>a.satou@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Brielle</td>
+                    <td>Integration Specialist</td>
+                    <td>New York</td>
+                    <td>b.williamson@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Herrod</td>
+                    <td>Sales Assistant</td>
+                    <td>San Francisco</td>
+                    <td>h.chandler@datatables.net</td>
+                </tr>
+                <tr>
+                    <td>Rhona</td>
+                    <td>Integration Specialist</td>
+                    <td>Tokyo</td>
+                    <td>r.davidson@datatables.net</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
