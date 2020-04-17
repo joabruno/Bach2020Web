@@ -26,11 +26,11 @@ namespace BachelorsProjectWebApp.Controllers
         }
 
 
-        public ActionResult Navigation()
+        public ActionResult Navigation(int id)
         {
             ViewBag.Message = "Your contact page.";
-
-            return View();
+            ViewBag.NavDestination = id;
+            return View("Navigation");
         }
     }
 }

@@ -1,124 +1,125 @@
-﻿
-@{
-    ViewBag.Title = "Navigation";
+﻿@{
+    ViewBag.Title = "Contact";
+    Layout = null;
 }
 
+<div class="canvas_navigation">
+    <div style="position: relative;">
+        <canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
+        <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
+    </div>
+    <div>
+        <button style="height:50px;width:50px" onclick="up()">Up</button>
+        <button style="height:50px;width:50px" onclick="down()">Down</button>
+    </div>
+</div>
 @Scripts.Render("~/bundles/jquery")
 
+@*  Get mouse position on click for edit mode.
+    <script>
+    function printMousePos(event) {
+        console.log("clientX: " + event.clientX);
+        console.log("clientY: " + event.clientY);
+    }
 
+    document.addEventListener("click", printMousePos);
+</script>*@
 <script>
-    var val = '@ViewBag.searchid';
-    $(document).ready(function () {
-        $('#example').DataTable({
-            "oSearch": { "sSearch": val }
-        });
-    });
+    window.onresize = function () { location.reload(); }
+
+    var canvas1 = document.getElementById("canvas1");
+    var ctx1 = canvas1.getContext("2d");
+    //TODO innerheight gets too large value, so we subtract 17px for now.
+    canvas1.width = window.innerWidth - 17;
+    canvas1.height = window.innerHeight - 17;
+
+    console.log("canvas1 width: " + window.innerWidth)
+
+    var background = new Image();
+    background.src = "https://i.imgur.com/HbQqtZU.png";
+    var xOffset;
+    var yOffset;
+    var currentPosition = 1;
+    var destination = @ViewBag.NavDestination;
+    console.log("1st offset: " + xOffset)
+    background.onload = function () {
+        drawVisuals(currentPosition, destination);
+    }
+
+
+    //Updates the visual of the location
+    function drawVisuals(currentPosition, destination) {
+        var scale = background.width / background.height;
+        console.log(scale);
+        //ctx1.drawImage(background,0,0);
+        var newWidth = canvas1.width;
+        var newHeight = newWidth / scale;
+        if (newHeight > canvas1.height) {
+            newHeight = canvas1.height;
+            newWidth = newHeight * scale;
+        }
+        xOffset = newWidth < canvas1.width ? ((canvas1.width - newWidth) / 2) : 0;
+        yOffset = newHeight < canvas1.height ? ((canvas.height - newHeight) / 2) : 0;
+
+        ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
+
+        drawCircles(xOffset + newWidth / 2, newHeight / 10, 10, newWidth / 12, currentPosition, destination);
+    }
+
+
+
+    //Updates position every 5 seconds
+    const updater = window.setInterval(function () {
+        down();
+    }, 5000);
+    //Use clearInterval(updater); to stop the interval again
+
+    function up() {
+        console.log("up");
+        currentPosition--;
+        drawVisuals(currentPosition, destination);
+
+    }
+
+    function down() {
+        console.log("down");
+        currentPosition++;
+        drawVisuals(currentPosition, destination);
+    }
+
+    function drawCircles(x, y, numberOfCircles, circleRadius, currentPosition, destination) {
+        var canvas2 = document.getElementById("canvas2")
+        var ctx2 = canvas2.getContext("2d");
+        canvas2.width = window.innerWidth - 17;
+        canvas2.height = window.innerHeight - 17;
+        var i;
+
+        for (i = 1; i < numberOfCircles; i++) {
+
+            if (i == currentPosition) {
+                ctx2.beginPath();
+                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+                ctx2.fillStyle = "red";
+                ctx2.fill();
+                ctx2.stroke();
+            } else if (i == destination) {
+                ctx2.beginPath();
+                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+                ctx2.fillStyle = "green";
+                ctx2.fill();
+                ctx2.stroke();
+            } else if (currentPosition == destination) {
+                ctx2.font = "30px Arial";
+                ctx2.fillText("You have reached your destination", 10, 50);
+
+
+            } else {
+                ctx2.beginPath();
+                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+                ctx2.stroke();
+            }
+        }
+
+    }
+
 </script>
-<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-    <thead>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-            <th>Start date</th>
-            <th>Salary</th>
-            <th>Extn.</th>
-            <th>E-mail</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Tiger</td>
-            <td>Nixon</td>
-            <td>System Architect</td>
-            <td>Edinburgh</td>
-            <td>61</td>
-            <td>2011/04/25</td>
-            <td>$320,800</td>
-            <td>5421</td>
-            <td>t.nixon@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Garrett</td>
-            <td>Winters</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>63</td>
-            <td>2011/07/25</td>
-            <td>$170,750</td>
-            <td>8422</td>
-            <td>g.winters@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Ashton</td>
-            <td>Cox</td>
-            <td>Junior Technical Author</td>
-            <td>San Francisco</td>
-            <td>66</td>
-            <td>2009/01/12</td>
-            <td>$86,000</td>
-            <td>1562</td>
-            <td>a.cox@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Cedric</td>
-            <td>Kelly</td>
-            <td>Senior Javascript Developer</td>
-            <td>Edinburgh</td>
-            <td>22</td>
-            <td>2012/03/29</td>
-            <td>$433,060</td>
-            <td>6224</td>
-            <td>c.kelly@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Airi</td>
-            <td>Satou</td>
-            <td>Accountant</td>
-            <td>Tokyo</td>
-            <td>33</td>
-            <td>2008/11/28</td>
-            <td>$162,700</td>
-            <td>5407</td>
-            <td>a.satou@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Brielle</td>
-            <td>Williamson</td>
-            <td>Integration Specialist</td>
-            <td>New York</td>
-            <td>61</td>
-            <td>2012/12/02</td>
-            <td>$372,000</td>
-            <td>4804</td>
-            <td>b.williamson@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Herrod</td>
-            <td>Chandler</td>
-            <td>Sales Assistant</td>
-            <td>San Francisco</td>
-            <td>59</td>
-            <td>2012/08/06</td>
-            <td>$137,500</td>
-            <td>9608</td>
-            <td>h.chandler@datatables.net</td>
-        </tr>
-        <tr>
-            <td>Rhona</td>
-            <td>Davidson</td>
-            <td>Integration Specialist</td>
-            <td>Tokyo</td>
-            <td>55</td>
-            <td>2010/10/14</td>
-            <td>$327,900</td>
-            <td>6200</td>
-            <td>r.davidson@datatables.net</td>
-        </tr>
-
-    </tbody>
-</table>
-
-

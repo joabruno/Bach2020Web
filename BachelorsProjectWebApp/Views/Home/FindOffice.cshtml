@@ -14,17 +14,28 @@
         });
     });
     $(document).ready(function () {
-        
         var table = $('.dataTable').DataTable();
-        $('.dataTable').on('click', 'tbody tr', function() {
-          console.log('API row values : ', table.row(this).data());
+        $('.dataTable').on('click', 'tbody tr', function () {
+            var outputImg = document.createElement('img');
+            var rootUrl = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
+            //TODO Change id to be the selected office's id instead of hardcoded value 8.
+		    var url = "https://bach2020.azurewebsites.net/Home/Navigation?id=8"
+            var actualUrl = rootUrl + url
+
+            outputImg.src = actualUrl
+            // The text in the popup
+            $('.modal-body').html('Scan the QR-code to navigate to ' + table.row(this).data()[0] + ' in office ' +  table.row(this).data()[2]
+            );
+            // QR-Code in the popup
+            $('.modal-qr').html(outputImg);
         })
     });
 </script>
+
 <div style="padding: 0px 4%">
     <div>
 
-        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+        <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" data-toggle="modal" data-target="#exampleModal">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -35,10 +46,16 @@
             </thead>
             <tbody>
                 <tr>
+                    <td>Steen</td>
+                    <td>Developer</td>
+                    <td>Nygaard 313</td>
+                    <td>abc@def.gh</td>
+                </tr>
+                <tr>
                     <td>Tiger</td>
                     <td>System Architect</td>
                     <td>Edinburgh</td>
-                    <td>t.nixon@datatables.net</td>
+                    <td>t.nixon@datatables.net @*<i class="fa fa-map-marker" aria-hidden="true" style="float: right;"></i>*@</td>
                 </tr>
                 <tr>
                     <td>Garrett</td>
@@ -82,8 +99,24 @@
                     <td>Tokyo</td>
                     <td>r.davidson@datatables.net</td>
                 </tr>
-
             </tbody>
         </table>
+    </div>
+</div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div align="center" class="modal-qr">
+
+            </div>
+        </div>
     </div>
 </div>

@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
-    @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <title>Bootstrap example</title>
+    @Scripts.Render("~/bundles/modernizr")   
     @Styles.Render("~/Content/css")
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <title>Bootstrap example</title>
+
 
 </head>
 <body>
@@ -22,28 +23,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Navigation<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/Home/FindOffice">Find an office<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Schedule</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Publications
+                        Research papers
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Crypto</a>
-                        <a class="dropdown-item" href="#">Ubi Com.</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Program Verification</a>
+                        <a class="dropdown-item" href="/Home/Papers?id=Crypto">Crypto</a>
+                        <a class="dropdown-item" href="/Home/Papers?id=Ubi Com.">Ubi Com.</a>
+                        <a class="dropdown-item" href="/Home/Papers?id=Program Verification">Program Verification</a>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Turing-114</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Office, Professor, TA..." aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" action="/Home/FindOffice">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search for an office" aria-label="Search" name="Search" id="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
