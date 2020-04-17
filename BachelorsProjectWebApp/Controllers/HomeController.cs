@@ -13,6 +13,12 @@ namespace BachelorsProjectWebApp.Controllers
             return View();
         }
 
+        public ActionResult EditPlan()
+        {
+
+            return View();
+        }
+
         public ActionResult FindOffice(string Search)
         {
             ViewBag.searchid = Search;
