@@ -19,9 +19,9 @@
             var outputImg = document.createElement('img');
             var rootUrl = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
             //TODO Change id to be the selected office's id instead of hardcoded value 8.
-		    var url = "https://bach2020.azurewebsites.net/Home/Navigation?id=8"
+            var url = "https://bach2020.azurewebsites.net/Home/" +$(this).attr("data-floorplan")+ "?id=" + $(this).attr("id")
             var actualUrl = rootUrl + url
-
+            console.log(table.row(this).data())
             outputImg.src = actualUrl
             // The text in the popup
             $('.modal-body').html('Scan the QR-code to navigate to ' + table.row(this).data()[0] + ' in office ' +  table.row(this).data()[2]
@@ -42,64 +42,101 @@
                     <th>Research Area</th>
                     <th>Office</th>
                     <th>E-mail</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr id="1" data-floorplan="NavigationDemo">
                     <td>Steen</td>
                     <td>Developer</td>
-                    <td>Nygaard 313</td>
+                    <td>Office 1</td>
                     <td>abc@def.gh</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="2" data-floorplan="NavigationDemo">
+                    <td>Steen</td>
+                    <td>Developer</td>
+                    <td>Office 2</td>
+                    <td>abc@def.gh</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
+                </tr>
+                <tr id="3" data-floorplan="NavigationDemo">
+                    <td>Steen</td>
+                    <td>Developer</td>
+                    <td>Office 3</td>
+                    <td>abc@def.gh</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
+                </tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Tiger</td>
                     <td>System Architect</td>
                     <td>Edinburgh</td>
-                    <td>t.nixon@datatables.net @*<i class="fa fa-map-marker" aria-hidden="true" style="float: right;"></i>*@</td>
+                    <td>t.nixon@datatables.net </td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Garrett</td>
                     <td>Accountant</td>
                     <td>Tokyo</td>
                     <td>g.winters@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Ashton</td>
                     <td>Junior Technical Author</td>
                     <td>San Francisco</td>
                     <td>a.cox@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Cedric</td>
                     <td>Senior Javascript Developer</td>
                     <td>Edinburgh</td>
                     <td>c.kelly@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Airi</td>
                     <td>Accountant</td>
                     <td>Tokyo</td>
                     <td>a.satou@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Brielle</td>
                     <td>Integration Specialist</td>
                     <td>New York</td>
                     <td>b.williamson@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Herrod</td>
                     <td>Sales Assistant</td>
                     <td>San Francisco</td>
                     <td>h.chandler@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr>
+                <tr id="3" data-floorplan="NavigationDemo">
                     <td>Rhona</td>
                     <td>Integration Specialist</td>
                     <td>Tokyo</td>
                     <td>r.davidson@datatables.net</td>
+                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+            </div>
+            <div class="modal-qr" style="text-align: center;">
+
+            </div>
+
+        </div>
     </div>
 </div>

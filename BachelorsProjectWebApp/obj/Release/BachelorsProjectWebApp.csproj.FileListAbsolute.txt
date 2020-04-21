@@ -76,3 +76,9 @@ C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\ob
 C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\obj\Release\BachelorsProjectWebApp.csproj.CopyComplete
 C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\obj\Release\BachelorsProjectWebApp.dll
 C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\obj\Release\BachelorsProjectWebApp.pdb
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Net.Http.Formatting.dll
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Web.Http.dll
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Web.Http.WebHost.dll
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Net.Http.Formatting.xml
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Web.Http.xml
+C:\Users\Yorkin xD\source\repos\BachelorsProjectWebApp\BachelorsProjectWebApp\bin\System.Web.Http.WebHost.xml

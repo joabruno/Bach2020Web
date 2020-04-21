@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BachelorsProjectWebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,8 +7,10 @@ using System.Web.Mvc;
 
 namespace BachelorsProjectWebApp.Controllers
 {
+    
     public class HomeController : Controller
     {
+        DBMapper dbmapper = new DBMapper();
         public ActionResult Index()
         {
             return View();
@@ -15,7 +18,12 @@ namespace BachelorsProjectWebApp.Controllers
 
         public ActionResult EditPlan()
         {
+            return View();
+        }
 
+        public ActionResult NavigationDemo(int id)
+        {
+            ViewBag.demo_id = id;
             return View();
         }
 
