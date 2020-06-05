@@ -15,17 +15,26 @@ namespace BachelorsProjectWebApp.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Hit when we navigato to EditPlan. Loads the floor plan based on ID.
+        /// </summary>
+        /// <param name="id">Floor plan ID</param>
+        /// <returns></returns>
         public ActionResult EditPlan(int id)
         {
             var fm = dbmapper.GetFloorPlanByID(id);
-            List<OfficeModel> offices = new List<OfficeModel>();
-            offices = dbmapper.GetOfficesByFloorID(id);
+            List<OfficeModel> offices = dbmapper.GetOfficesByFloorID(id);
 
             ViewBag.imgurl = fm.Floorplan;
             ViewBag.FloorID = id;
             return View(offices);
         }
 
+        /// <summary>
+        /// Hit when we save changes on EditPlan. Support for only adding beacons or only adding tracks not implemented.
+        /// </summary>
+        /// <param name="bm">The changes done on EditPlan is saved to this object.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult EditPlan(BeaconModel bm)
         {

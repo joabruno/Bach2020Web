@@ -191,8 +191,10 @@
 			} else if (currentPosition == destination) {
 				ctx2.font = "30px Arial";
                 ctx2.fillText("You have reached your destination", 10, 50);
+                Android.vibrate();
 				clearInterval(updater);
-				stopScanning();
+                stopScanning();
+                Android.showToast("You have reached your destination!")
 			} else {
 				ctx2.beginPath();
                 ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
