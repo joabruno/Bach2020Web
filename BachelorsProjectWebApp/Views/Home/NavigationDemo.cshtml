@@ -20,37 +20,60 @@
 </div>
 <script>
 
-    $(document).ready(function () {
+	var beaconObject = @Html.Raw(Json.Encode(Model.beaconlist));
+	var trackObject = @Html.Raw(Json.Encode(Model.tracklist));
+	var beaconPosX = [];
+	var beaconPosY = [];
+    var Beacon_ids = [];
+	var trackPosX = [];
+	var trackPosY = [];
 
-        Android.startScanning();
+	var canvas1 = document.getElementById("canvas1");
+    var ctx1 = canvas1.getContext("2d");
+    var beaconID;
+
+	var xOffset;
+    var yOffset;
+	var newWidth;
+	var newHeight;
+
+    var currentPosition;
+    var destination = @ViewBag.demo_id;
+
+    var background = new Image();
+	background.src = '@ViewBag.imgurl';
+
+	$(document).ready(function () {
+
+		console.log(beaconObject);
+		Android.startScanning();
     });
 
 	window.onresize = function () { location.reload(); }
 
-	var canvas1 = document.getElementById("canvas1");
-	var ctx1 = canvas1.getContext("2d");
-    var beaconID;
-	canvas1.width = window.innerWidth - 17;
-	canvas1.height = window.innerHeight - 17;
 
-	console.log("canvas1 width: " + window.innerWidth)
-
-	var Beacon_ids = ["1,1", "1,2", "1,3"];
-
-	var background = new Image();
-	background.src = "https://i.imgur.com/9wljlvL.png";
-	var xOffset;
-    var yOffset;
-
-
-    var currentPosition = 1;
-
-    var destination = @ViewBag.demo_id;
-
-	console.log("1st offset: " + xOffset)
 	background.onload = function () {
+        canvas1.width = window.innerWidth - 17;
+		canvas1.height = window.innerHeight - 17;
+
+		calculateOffset();
+        convertObjectsToCoordinates(xOffset, yOffset);
         drawVisuals(currentPosition, destination);
 	}
+
+	function convertObjectsToCoordinates(xOffset, yOffset) {
+		for (var i = 0; i < beaconObject.length; i++) {
+			beaconPosX[i] = Math.round(beaconObject[i].xPos  * (window.innerWidth - 17 - (2 * xOffset)) + xOffset);
+			beaconPosY[i] = Math.round(beaconObject[i].yPos  * (window.innerHeight - 17 - (2 * yOffset)) + yOffset);
+			Beacon_ids[i] = beaconObject[i].beaconId;
+		}
+
+		for (var j = 0; j < trackObject.length; j++) {
+			trackPosX[j] = Math.round(trackObject[j].xPos  * (window.innerWidth - 17 - (2 * xOffset)) + xOffset);
+            trackPosY[j] = Math.round(trackObject[j].yPos  * (window.innerHeight - 17 - (2 * yOffset)) + yOffset);
+		}
+
+    }
 
 	//Updates position every 5 seconds
     const updater = window.setInterval(function () {
@@ -71,7 +94,7 @@
 		Android.showToast(beaconID);
 		for (var i = 0; i < Beacon_ids.length; i++) {
 				if (Beacon_ids[i] === beaconID) {
-                    drawVisuals(i+1, destination);
+                    drawVisuals(i, destination);
 				}
 			}
 	}
@@ -83,35 +106,37 @@
 
 			for (var i = 0; i < Beacon_ids.length; i++) {
 				if (Beacon_ids[i] === beaconID) {
-					drawVisuals(i + 1, destination);
+					drawVisuals(i, destination);
 				}
 			}
 		} else {
 			var x = Android.showToast(toast);
 			Android.showToast(x);
-
-
 		}
 
 	}
 
+	function calculateOffset() {
+        var scale = background.width / background.height;
+        console.log(scale);
+        //ctx1.drawImage(background,0,0);
+        newWidth = canvas1.width;
+        newHeight = newWidth / scale;
+        if (newHeight > canvas1.height) {
+            newHeight = canvas1.height;
+            newWidth = newHeight * scale;
+        }
+        xOffset = newWidth < canvas1.width ? ((canvas1.width - newWidth) / 2) : 0;
+        yOffset = newHeight < canvas1.height ? ((canvas1.height - newHeight) / 2) : 0;
+    }
+
 
 	function drawVisuals(currentPosition, destination) {
-		var scale = background.width / background.height; 0
-		console.log(scale);
-		//ctx1.drawImage(background,0,0);
-		var newWidth = canvas1.width;
-		var newHeight = newWidth / scale;
-		if (newHeight > canvas1.height) {
-			newHeight = canvas1.height;
-			newWidth = newHeight * scale;
-		}
-		xOffset = newWidth < canvas1.width ? ((canvas1.width - newWidth) / 2) : 0;
-		yOffset = newHeight < canvas1.height ? ((canvas1.height - newHeight) / 2) : 0;
-
 		ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
 
-		drawCircles(xOffset + newWidth / 5, newHeight / 8, 4, newWidth / 25, currentPosition, destination);
+		drawTrackCircles(newWidth / 25, currentPosition, destination);
+		//drawBeaconCircles(newWidth / 35);
+		//drawCircles(xOffset + newWidth / 5, newHeight / 8, 4, newWidth / 25, currentPosition, destination);
 	}
 
 	function up() {
@@ -126,24 +151,40 @@
 		drawVisuals(currentPosition, destination);
 	}
 
-	function drawCircles(x, y, numberOfCircles, circleRadius, currentPosition, destination) {
+	function drawBeaconCircles(circleRadius) {
+        var canvas2 = document.getElementById("canvas2")
+        var ctx2 = canvas2.getContext("2d");
+        canvas2.width = window.innerWidth - 17;
+        canvas2.height = window.innerHeight - 17;
+
+		for (var i = 0; i < beaconObject.length; i++) {
+
+			ctx2.beginPath();
+			ctx2.arc(beaconPosX[i], beaconPosY[i], circleRadius, 0, 2 * Math.PI)
+			ctx2.fillStyle = "blue";
+			ctx2.fill();
+			ctx2.stroke();
+        }
+    }
+
+	function drawTrackCircles(circleRadius, currentPosition, destination) {
 		var canvas2 = document.getElementById("canvas2")
 		var ctx2 = canvas2.getContext("2d");
 		canvas2.width = window.innerWidth - 17;
 		canvas2.height = window.innerHeight - 17;
-		var i;
 
-		for (i = 1; i < numberOfCircles; i++) {
+
+		for (i = 0; i < trackObject.length; i++) {
 
 			if (i == currentPosition) {
 				ctx2.beginPath();
-				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+				ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
 				ctx2.fillStyle = "red";
 				ctx2.fill();
 				ctx2.stroke();
 			} else if (i == destination) {
 				ctx2.beginPath();
-				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+                ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
 				ctx2.fillStyle = "green";
 				ctx2.fill();
 				ctx2.stroke();
@@ -154,7 +195,7 @@
 				stopScanning();
 			} else {
 				ctx2.beginPath();
-				ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
+                ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
 				ctx2.stroke();
 			}
 		}

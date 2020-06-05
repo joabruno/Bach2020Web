@@ -25,14 +25,16 @@
             console.log(table.row(this).data())
             outputImg.src = actualUrl
             // The text in the popup
-            $('.modal-body').html('Scan the QR-code to navigate to ' + table.row(this).data()[0] + ' in office ' +  table.row(this).data()[2]
+            $('.contact-info').html('<span style="font-weight: bold">' + table.row(this).data()[0] + '</span> <br> <i class="fa fa-envelope" aria-hidden="true"></i><span> ' + $(this).attr("data-mail") + '</span><br> <i class="fa fa-phone-square" style="width: 16px" aria-hidden="true"></i><span> +45 00 00 00 00</span>')
+            $('.modal-body').html('Scan the QR-code to navigate to ' + table.row(this).data()[0] + ' in ' +  table.row(this).data()[2] + ' ' + table.row(this).data()[3]
             );
             // QR-Code in the popup
             $('.modal-qr').html(outputImg);
         })
     });
 </script>
-
+<p style="align-content: center; margin-bottom: 0; padding: 0 4%; color:rgba(0,0,0,0.6)">Tip: Try searching for parts of a name if you don't remember the full name.</p>
+<p style="align-content: center; padding: 0 4%; color:rgba(0,0,0,0.6)">Tip: Click the QR-Code icon or anywhere in the row of the person you're looking for to get more information.</p>
 <div style="padding: 0px 4%">
     <div>
 
@@ -41,87 +43,66 @@
                 <tr>
                     <th>Name</th>
                     <th>Research Area</th>
-                    <th>Office</th>
-                    <th>E-mail</th>
+                    <th>Building</th>
+                    <th>Office nr.</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr id="1" data-floorplan="NavigationDemo" data-floorplanID="1">
+                <tr id="0" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="steen@uni.dk">
                     <td>Steen</td>
-                    <td>Developer</td>
-                    <td>Office 1</td>
-                    <td>abc@def.gh</td>
+                    <td>Bluetooth navigation</td>
+                    <td>Steen's apartment</td>
+                    <td>1</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="2" data-floorplan="NavigationDemo" data-floorplanID="1">
+                <tr id="1" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="steen@uni.dk">
                     <td>Steen</td>
-                    <td>Developer</td>
-                    <td>Office 2</td>
-                    <td>abc@def.gh</td>
+                    <td>Bluetooth navigation</td>
+                    <td>Steen's apartment</td>
+                    <td>2</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo" data-floorplanID="1">
+                <tr id="2" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="steen@uni.dk">
                     <td>Steen</td>
-                    <td>Developer</td>
-                    <td>Office 3</td>
-                    <td>abc@def.gh</td>
+                    <td>Bluetooth navigation</td>
+                    <td>Steen's apartment</td>
+                    <td>3</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Tiger</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>t.nixon@datatables.net </td>
+                <tr id="3" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="john.doe@uni.dk">
+                    <td>John Doe</td>
+                    <td>Machine Learning</td>
+                    <td>Turing</td>
+                    <td>123</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Garrett</td>
-                    <td>Accountant</td>
-                    <td>Tokyo</td>
-                    <td>g.winters@datatables.net</td>
+                <tr id="3" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="jane.doe@uni.dk">
+                    <td>Jane Doe</td>
+                    <td>Algorithms</td>
+                    <td>Turing</td>
+                    <td>124</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Ashton</td>
-                    <td>Junior Technical Author</td>
-                    <td>San Francisco</td>
-                    <td>a.cox@datatables.net</td>
+                <tr id="3" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="nic.doe@uni.dk">
+                    <td>Nic Doe</td>
+                    <td>Statistics</td>
+                    <td>Nygaard</td>
+                    <td>123</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Cedric</td>
-                    <td>Senior Javascript Developer</td>
-                    <td>Edinburgh</td>
-                    <td>c.kelly@datatables.net</td>
+                <tr id="3" data-floorplan="NavigationDemo" data-floorplanID="1" data-mail="irene.doe@uni.dk">
+                    <td>Irene Doe</td>
+                    <td>HCI</td>
+                    <td>Nygaard</td>
+                    <td>124</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Airi</td>
-                    <td>Accountant</td>
-                    <td>Tokyo</td>
-                    <td>a.satou@datatables.net</td>
-                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
-                </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Brielle</td>
-                    <td>Integration Specialist</td>
-                    <td>New York</td>
-                    <td>b.williamson@datatables.net</td>
-                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
-                </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Herrod</td>
-                    <td>Sales Assistant</td>
-                    <td>San Francisco</td>
-                    <td>h.chandler@datatables.net</td>
-                    <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
-                </tr>
-                <tr id="3" data-floorplan="NavigationDemo">
-                    <td>Rhona</td>
-                    <td>Integration Specialist</td>
-                    <td>Tokyo</td>
-                    <td>r.davidson@datatables.net</td>
+                <tr id="3" data-floorplan="Navigation" data-floorplanID="1" style="display: none" data-mail="test@uni.dk">
+                    <td>Testing tool</td>
+                    <td>For testing</td>
+                    <td>Steens kammer</td>
+                    <td>test@datatables.net</td>
                     <td style="text-align: center"><i class="fa fa-qrcode" aria-hidden="true"></i></td>
                 </tr>
             </tbody>
@@ -131,7 +112,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-
+            <div class="contact-info" style="padding-left: 1rem; padding-top: 1rem;"></div>
             <div class="modal-body">
             </div>
             <div class="modal-qr" style="text-align: center;">

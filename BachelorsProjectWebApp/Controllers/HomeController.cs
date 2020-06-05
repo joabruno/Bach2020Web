@@ -56,7 +56,7 @@ namespace BachelorsProjectWebApp.Controllers
                     string[] xyPos = trackPosList[i].Split(posSeperator, StringSplitOptions.RemoveEmptyEntries);
                     float floatx = float.Parse(xyPos[0]);
                     float floaty = float.Parse(xyPos[1]);
-                    tracks.Add(new BeaconModel { FloorID=bm.FloorID, beaconId = beaconIdList[i], xPos = floatx, yPos = floaty });
+                    tracks.Add(new BeaconModel { FloorID=bm.FloorID, xPos = floatx, yPos = floaty });
                 }
 
                 foreach (var beacon in beacons)
@@ -85,7 +85,8 @@ namespace BachelorsProjectWebApp.Controllers
             var nm = new NavigationModel();
             nm.beaconlist = dbmapper.GetAllBeaconsOnFloorByID(int.Parse(urlpars[1]));
             nm.tracklist = dbmapper.GetAllTracksOnFloorByID(int.Parse(urlpars[1]));
-
+            var fm = dbmapper.GetFloorPlanByID(int.Parse(urlpars[1]));
+            ViewBag.imgurl = fm.Floorplan;
             ViewBag.demo_id = urlpars[0];
             return View(nm);
         }
@@ -118,15 +119,17 @@ namespace BachelorsProjectWebApp.Controllers
             return RedirectToAction("EditPlan", new { id = floorplanid } );
         }
 
-        public ActionResult Navigation(int id)
+        public ActionResult Navigation(string destination)
         {
-            var intl = new List<int>();
-            intl.Add(1);
-            intl.Add(2);
-            ViewBag.intlist = intl;
-            ViewBag.Message = "Your contact page.";
-            ViewBag.NavDestination = id;
-            return View("Navigation");
+            string[] seperator = { "," };
+            string[] urlpars = destination.Split(seperator, StringSplitOptions.RemoveEmptyEntries);
+            var nm = new NavigationModel();
+            nm.beaconlist = dbmapper.GetAllBeaconsOnFloorByID(int.Parse(urlpars[1]));
+            nm.tracklist = dbmapper.GetAllTracksOnFloorByID(int.Parse(urlpars[1]));
+            var fm = dbmapper.GetFloorPlanByID(int.Parse(urlpars[1]));
+            ViewBag.imgurl = fm.Floorplan;
+            ViewBag.demo_id = urlpars[0];
+            return View(nm);
         }
     }
 }

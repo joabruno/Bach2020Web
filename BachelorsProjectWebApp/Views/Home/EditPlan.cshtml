@@ -10,17 +10,20 @@
     <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
 </div>
 <div>
-    <button style="height:50px;width:70px" onclick="beaconsToggle()">Add Beacon</button>
-    <button style="height:50px;width:70px" onclick="tracksToggle()">Add Track</button>
+    <button style="height: 50px;width: 70px; vertical-align: top;" onclick="beaconsToggle()">Add Beacon</button>
+    <button style="        height: 50px;
+        width: 70px;
+        vertical-align: top;
+" onclick="tracksToggle()">Add Track</button>
     <button style="height:50px;width:50px" onclick="reset()">Reset</button>
     <button style="height:50px;width:50px" onclick="save()">Save</button>
 </div>
 <div class="form-popup" id="popup-Form">
-    <form action="javascript:createBeacon();" class="form-container" id="form">
+    <form style="padding-top:15px" action="javascript:createBeacon();" class="form-container" id="form">
 
-        <input type="number" placeholder="Major" name="major" required>
-        <input type="number" placeholder="Minor" name="minor" required>
-        @Html.DropDownList("offices", Model.Select(office => new SelectListItem() { Text=office.OfficeNumber.ToString(), Value=office.OfficeID.ToString() }), new { id="offices" })
+        <input type="number" placeholder="Major" name="major" required><br /><div style="padding-top:10px"> </div>
+        <input type="number" placeholder="Minor" name="minor" required><br /><div style="padding-top:10px"> </div>
+        Office number: @Html.DropDownList("offices", Model.Select(office => new SelectListItem() { Text=office.OfficeNumber.ToString(), Value=office.OfficeID.ToString() }), new { id="offices" })<br /><div style="padding-top:10px"> </div>
         <button type="submit" class="btn">Create Beacon</button>
         <button type="submit" class="btn cancel" onclick="cancelForm()">Cancel</button>
     </form>
@@ -311,6 +314,8 @@
         yOffset = newHeight < canvas1.height ? ((canvas1.height - newHeight) / 2) : 0;
 
         ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
+
+
         //drawCircles(xOffset + newWidth/2, newHeight/10, 10, newWidth/12, currentPosition, destination);
     }
 

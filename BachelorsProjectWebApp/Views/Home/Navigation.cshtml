@@ -1,133 +1,256 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "NavigationDemo";
     Layout = null;
 }
+@model BachelorsProjectWebApp.Models.NavigationModel
 
-<div class="canvas_navigation">
-    <div style="position: relative;">
-        <canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
-        <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
-    </div>
-    <div style="display: none">
-        <button style="height:50px;width:50px" onclick="up()">Up</button>
-        <button style="height:50px;width:50px" onclick="down()">Down</button>
-        <button style="height:50px;width:50px" onclick="showAndroidToast('Hello Android!')">Toast</button>
-    </div>
-</div>
 @Scripts.Render("~/bundles/jquery")
-@*  Get mouse position on click for edit mode.
-        <script>
-        function printMousePos(event) {
-            console.log("clientX: " + event.clientX);
-            console.log("clientY: " + event.clientY);
-        }
-        document.addEventListener("click", printMousePos);
-    </script>*@
+
+<div style="position: relative;">
+    <canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
+    <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
+</div>
+<div style="display: true">
+    <button style="height:50px;width:50px" onclick="showAndroidToast('Hello Android!')">Toast</button>
+    <button style="height:50px;width:50px" onclick="retrieveBestBeacon()">Retrieve</button>
+    <button style="height:50px;width:50px" onclick="startScanning()">Start</button>
+    <button style="height:50px;width:50px" onclick="stopScanning()">Stop</button>
+</div>
 <script>
 
+	var beaconObject = @Html.Raw(Json.Encode(Model.beaconlist));
+	var trackObject = @Html.Raw(Json.Encode(Model.tracklist));
+	var beaconPosX = [];
+	var beaconPosY = [];
+    var Beacon_ids = [];
+	var trackPosX = [];
+	var trackPosY = [];
 
-    window.onresize = function () { location.reload(); }
-    
-    var canvas1 = document.getElementById("canvas1");
+	var canvas1 = document.getElementById("canvas1");
     var ctx1 = canvas1.getContext("2d");
-    //TODO innerheight gets too large value, so we subtract 17px for now.
-    canvas1.width = window.innerWidth - 17;
-    canvas1.height = window.innerHeight - 17;
+    var beaconID;
 
-    console.log("canvas1 width: " + window.innerWidth)
+	var xOffset;
+    var yOffset;
+	var newWidth;
+	var newHeight;
+
+
+
+    var currentPosition = 0;
+    var destination = @ViewBag.demo_id;
 
     var background = new Image();
-    background.src = "https://i.imgur.com/HbQqtZU.png";
-    var xOffset;
-    var yOffset;
-    var currentPosition = 1;
-    var destination = @ViewBag.NavDestination;
+	background.src = '@ViewBag.imgurl';
 
-    console.log("1st offset: " + xOffset)
-    background.onload = function () {
+	$(document).ready(function () {
+
+		console.log(beaconObject);
+		Android.startScanning();
+    });
+
+	window.onresize = function () { location.reload(); }
+
+
+	background.onload = function () {
+        canvas1.width = window.innerWidth - 17;
+		canvas1.height = window.innerHeight - 17;
+
+		calculateOffset();
+        convertObjectsToCoordinates(xOffset, yOffset);
         drawVisuals(currentPosition, destination);
+	}
+
+	function convertObjectsToCoordinates(xOffset, yOffset) {
+		for (var i = 0; i < beaconObject.length; i++) {
+			beaconPosX[i] = Math.round(beaconObject[i].xPos  * (window.innerWidth - 17 - (2 * xOffset)) + xOffset);
+			beaconPosY[i] = Math.round(beaconObject[i].yPos  * (window.innerHeight - 17 - (2 * yOffset)) + yOffset);
+			Beacon_ids[i] = beaconObject[i].beaconId;
+		}
+
+		for (var j = 0; j < trackObject.length; j++) {
+			trackPosX[j] = Math.round(trackObject[j].xPos  * (window.innerWidth - 17 - (2 * xOffset)) + xOffset);
+            trackPosY[j] = Math.round(trackObject[j].yPos  * (window.innerHeight - 17 - (2 * yOffset)) + yOffset);
+		}
+
     }
 
+	//Updates position every 5 seconds
+    //const updater = window.setInterval(function () {
+    //    retrieveBestBeacon();
+    //}, 2000);
+    //Use clearInterval(updater); to stop the interval again
 
-    //Updates the visual of the location
-    function drawVisuals(currentPosition, destination) {
+	function startScanning() {
+		Android.startScanning();
+	}
+
+	function stopScanning() {
+		Android.stopScanning();
+	}
+
+	function retrieveBestBeacon() {
+        beaconID = Android.retrieveBestBeacon();
+		Android.showToast(beaconID);
+		for (var i = 0; i < Beacon_ids.length; i++) {
+				if (Beacon_ids[i] === beaconID) {
+                    drawVisuals(i, destination);
+				}
+			}
+	}
+
+	function showAndroidToast(toast) {
+
+		if (beaconID) {
+			Android.showToast(beaconID);
+
+			for (var i = 0; i < Beacon_ids.length; i++) {
+				if (Beacon_ids[i] === beaconID) {
+					drawVisuals(i, destination);
+				}
+			}
+		} else {
+			var x = Android.showToast(toast);
+			Android.showToast(x);
+		}
+
+	}
+
+	function calculateOffset() {
         var scale = background.width / background.height;
         console.log(scale);
         //ctx1.drawImage(background,0,0);
-        var newWidth = canvas1.width;
-        var newHeight = newWidth / scale;
+        newWidth = canvas1.width;
+        newHeight = newWidth / scale;
         if (newHeight > canvas1.height) {
             newHeight = canvas1.height;
             newWidth = newHeight * scale;
         }
         xOffset = newWidth < canvas1.width ? ((canvas1.width - newWidth) / 2) : 0;
-        yOffset = newHeight < canvas1.height ? ((canvas.height - newHeight) / 2) : 0;
-
-        ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
-
-        drawCircles(xOffset + newWidth / 2, newHeight / 10, 10, newWidth / 12, currentPosition, destination);
+        yOffset = newHeight < canvas1.height ? ((canvas1.height - newHeight) / 2) : 0;
     }
 
 
+	function drawVisuals(currentPosition, destination) {
+		ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
 
-    //Updates position every 5 seconds
-    //const updater = window.setInterval(function () {
-    //    showAndroidToast("Hello Toast!");
-    //}, 5000);
-    //Use clearInterval(updater); to stop the interval again
+		drawTrackCircles(newWidth / 25, currentPosition, destination);
+		//drawBeaconCircles(newWidth / 35);
+		//drawCircles(xOffset + newWidth / 5, newHeight / 8, 4, newWidth / 25, currentPosition, destination);
+	}
 
-    function up() {
-        console.log("up");
-        currentPosition--;
-        drawVisuals(5, destination);
+	function up() {
+		console.log("up");
+		currentPosition--;
+		drawVisuals(currentPosition, destination);
+	}
 
-    }
+	function down() {
+		console.log("down");
+		currentPosition++;
+		drawVisuals(currentPosition, destination);
+	}
 
-    function down() {
-        console.log("down");
-        currentPosition++;
-        drawVisuals(currentPosition, destination);
-    }
-
-    function showAndroidToast(toast) {
-
-        var x = Android.showToast(toast);
-        Android.showToast(x);
-    }
-
-    function drawCircles(x, y, numberOfCircles, circleRadius, currentPosition, destination) {
+	function drawBeaconCircles(circleRadius) {
         var canvas2 = document.getElementById("canvas2")
         var ctx2 = canvas2.getContext("2d");
         canvas2.width = window.innerWidth - 17;
         canvas2.height = window.innerHeight - 17;
-        var i;
 
-        for (i = 1; i < numberOfCircles; i++) {
+		for (var i = 0; i < beaconObject.length; i++) {
 
-            if (i == currentPosition) {
-                ctx2.beginPath();
-                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
-                ctx2.fillStyle = "red";
-                ctx2.fill();
-                ctx2.stroke();
-            } else if (i == destination) {
-                ctx2.beginPath();
-                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
-                ctx2.fillStyle = "green";
-                ctx2.fill();
-                ctx2.stroke();
-            } else if (currentPosition == destination) {
-                ctx2.font = "30px Arial";
-                ctx2.fillText("You have reached your destination", 10, 50);
-
-
-            } else {
-                ctx2.beginPath();
-                ctx2.arc(x, i * y, circleRadius, 0, 2 * Math.PI);
-                ctx2.stroke();
-            }
+			ctx2.beginPath();
+			ctx2.arc(beaconPosX[i], beaconPosY[i], circleRadius, 0, 2 * Math.PI)
+			ctx2.fillStyle = "blue";
+			ctx2.fill();
+			ctx2.stroke();
         }
+	}
 
+    function drawPin(pin, ctx) {
+
+        ctx.save();
+        ctx.translate(pin.x, pin.y);
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(2, -10, -20, -25, 0, -30);
+        ctx.bezierCurveTo(20, -25, -2, -10, 0, 0);
+        ctx.fillStyle = pin.color;
+        ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, -21, 3, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.fillStyle = "#ab0000";
+        ctx.fill();
+
+        ctx.restore();
     }
+
+	function drawTrackCircles(circleRadius, currentPosition, destination) {
+		var canvas2 = document.getElementById("canvas2")
+		var ctx2 = canvas2.getContext("2d");
+		canvas2.width = window.innerWidth - 17;
+		canvas2.height = window.innerHeight - 17;
+
+
+		for (i = 0; i < trackObject.length; i++) {
+
+			if (i == currentPosition) {
+				ctx2.beginPath();
+				ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
+
+				ctx2.fillStyle = "#00478f";
+				ctx2.fill();
+				ctx2.stroke();
+				ctx2.beginPath();
+				ctx2.arc(trackPosX[i], trackPosY[i], circleRadius / 1.1, 0, 2 * Math.PI);
+				ctx2.fillStyle = "#007dfc";
+				ctx2.fill();
+				ctx2.stroke();
+			} else if (i == destination) {
+
+				ctx2.beginPath();
+				ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
+				ctx2.fillStyle = "#800000";
+				ctx2.fill();
+				ctx2.stroke();
+				ctx2.beginPath();
+				ctx2.arc(trackPosX[i], trackPosY[i], circleRadius / 1.1, 0, 2 * Math.PI);
+				ctx2.fillStyle = "red";
+				ctx2.fill();
+				ctx2.stroke();
+
+				var pin = { x: trackPosX[i], y: trackPosY[i], color: "#ff2424" };
+				drawPin(pin, ctx2)
+
+			} else if (i > currentPosition && i < destination || i < currentPosition && i > destination) {
+                ctx2.beginPath();
+                ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
+                //ctx2.fillStyle = "#dbdbdb";
+                //ctx2.fillStyle = "#d1d1d1";
+                ctx2.fillStyle = "rgba(3, 125, 255, 0.2)";
+                ctx2.fill();
+                ctx2.stroke();
+			} else {
+				ctx2.beginPath();
+                ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
+                //ctx2.fillStyle = "#dbdbdb";
+                //ctx2.fillStyle = "#d1d1d1";
+                ctx2.fillStyle = "white";
+				ctx2.fill();
+				ctx2.stroke();
+				/*ctx2.beginPath();
+                ctx2.arc(trackPosX[i], trackPosY[i], circleRadius / 1.2, 0, 2 * Math.PI);
+                ctx2.fillStyle = "white";
+				ctx2.fill();
+				ctx2.stroke();*/
+			}
+		}
+
+	}
 
 </script>
