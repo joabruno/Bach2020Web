@@ -87,18 +87,7 @@ namespace BachelorsProjectWebApp.Controllers
             return RedirectToAction("EditPlan", new { id = bm.FloorID });
         }
 
-        public ActionResult NavigationDemo(string destination)
-        {
-            string[] seperator = { "," };
-            string[] urlpars = destination.Split(seperator, StringSplitOptions.RemoveEmptyEntries);
-            var nm = new NavigationModel();
-            nm.beaconlist = dbmapper.GetAllBeaconsOnFloorByID(int.Parse(urlpars[1]));
-            nm.tracklist = dbmapper.GetAllTracksOnFloorByID(int.Parse(urlpars[1]));
-            var fm = dbmapper.GetFloorPlanByID(int.Parse(urlpars[1]));
-            ViewBag.imgurl = fm.Floorplan;
-            ViewBag.demo_id = urlpars[0];
-            return View(nm);
-        }
+        
 
         public ActionResult FindOffice(string Search)
         {
@@ -127,7 +116,18 @@ namespace BachelorsProjectWebApp.Controllers
 
             return RedirectToAction("EditPlan", new { id = floorplanid } );
         }
-
+        public ActionResult NavigationDemo(string destination)
+        {
+            string[] seperator = { "," };
+            string[] urlpars = destination.Split(seperator, StringSplitOptions.RemoveEmptyEntries);
+            var nm = new NavigationModel();
+            nm.beaconlist = dbmapper.GetAllBeaconsOnFloorByID(int.Parse(urlpars[1]));
+            nm.tracklist = dbmapper.GetAllTracksOnFloorByID(int.Parse(urlpars[1]));
+            var fm = dbmapper.GetFloorPlanByID(int.Parse(urlpars[1]));
+            ViewBag.imgurl = fm.Floorplan;
+            ViewBag.demo_id = urlpars[0];
+            return View(nm);
+        }
         public ActionResult Navigation(string destination)
         {
             string[] seperator = { "," };

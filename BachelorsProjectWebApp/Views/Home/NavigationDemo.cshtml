@@ -10,14 +10,7 @@
 	<canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
 	<canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
 </div>
-<div style="display: none">
-	<button style="height:50px;width:50px" onclick="up()">Up</button>
-	<button style="height:50px;width:50px" onclick="down()">Down</button>
-	<button style="height:50px;width:50px" onclick="showAndroidToast('Hello Android!')">Toast</button>
-	<button style="height:50px;width:50px" onclick="retrieveBestBeacon()">Retrieve</button>
-	<button style="height:50px;width:50px" onclick="startScanning()">Start</button>
-	<button style="height:50px;width:50px" onclick="stopScanning()">Stop</button>
-</div>
+
 <script>
 
 	var beaconObject = @Html.Raw(Json.Encode(Model.beaconlist));
@@ -137,18 +130,6 @@
 		drawTrackCircles(newWidth / 25, currentPosition, destination);
 		//drawBeaconCircles(newWidth / 35);
 		//drawCircles(xOffset + newWidth / 5, newHeight / 8, 4, newWidth / 25, currentPosition, destination);
-	}
-
-	function up() {
-		console.log("up");
-		currentPosition--;
-		drawVisuals(currentPosition, destination);
-	}
-
-	function down() {
-		console.log("down");
-		currentPosition++;
-		drawVisuals(currentPosition, destination);
 	}
 
 	function drawBeaconCircles(circleRadius) {

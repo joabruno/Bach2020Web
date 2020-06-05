@@ -10,7 +10,7 @@
     <canvas id="canvas1" style="position: absolute; left: 0; top: 0; z-index: -2;"></canvas>
     <canvas id="canvas2" style="position: absolute; left: 0; top: 0; z-index: -1;"></canvas>
 </div>
-<div style="display: true">
+<div style="display: none ">
     <button style="height:50px;width:50px" onclick="showAndroidToast('Hello Android!')">Toast</button>
     <button style="height:50px;width:50px" onclick="retrieveBestBeacon()">Retrieve</button>
     <button style="height:50px;width:50px" onclick="startScanning()">Start</button>
@@ -37,7 +37,7 @@
 
 
 
-    var currentPosition = 0;
+    var currentPosition;
     var destination = @ViewBag.demo_id;
 
     var background = new Image();
@@ -75,11 +75,6 @@
 
     }
 
-	//Updates position every 5 seconds
-    //const updater = window.setInterval(function () {
-    //    retrieveBestBeacon();
-    //}, 2000);
-    //Use clearInterval(updater); to stop the interval again
 
 	function startScanning() {
 		Android.startScanning();
@@ -235,6 +230,11 @@
                 ctx2.fillStyle = "rgba(3, 125, 255, 0.2)";
                 ctx2.fill();
                 ctx2.stroke();
+			} else if (currentPosition == destination) {
+                Android.vibrate();
+				clearInterval(updater);
+                stopScanning();
+                Android.showToast("You have reached your destination!")
 			} else {
 				ctx2.beginPath();
                 ctx2.arc(trackPosX[i], trackPosY[i], circleRadius, 0, 2 * Math.PI);
