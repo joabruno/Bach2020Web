@@ -74,7 +74,9 @@
 		}
 
     }
-
+	const updater = window.setInterval(function () {
+        retrieveBestBeacon();
+    }, 2000);
 
 	function startScanning() {
 		Android.startScanning();

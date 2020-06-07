@@ -3,6 +3,7 @@
     ViewBag.Title = "EditPlan";
     Layout = null;
 }
+
 @model List<BachelorsProjectWebApp.Models.OfficeModel>
 
 <div style="position: relative;">
@@ -30,17 +31,15 @@
 </div>
 @Scripts.Render("~/bundles/jquery")
 <script>
-
+    //We reload when the window is resized. Only relevant in browsers.
     window.onresize = function () { location.reload(); }
 
-    //Initializing canvas and ctx
     var canvas1 = document.getElementById("canvas1");
     var canvas2 = document.getElementById("canvas2")
 
     var ctx1 = canvas1.getContext("2d");
     var ctx2 = canvas2.getContext("2d");
-
-    //Sets canvas width and height
+    //-17 in lack of better solution. innerWidth and innerHeight returns larger values than the actual width and height for some reason.
     canvas1.width = window.innerWidth -17;
     canvas1.height = window.innerHeight -17;
     canvas2.width = window.innerWidth -17;
@@ -71,7 +70,6 @@
 
     //Onload function
     background.onload = function () {
-        //getPositions();
         closeForm();
         drawVisuals(currentPosition, destination);
     }

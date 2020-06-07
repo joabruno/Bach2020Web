@@ -68,11 +68,10 @@
 
     }
 
-	//Updates position every 5 seconds
+	//Updates position every 2 seconds
     const updater = window.setInterval(function () {
         retrieveBestBeacon();
     }, 2000);
-    //Use clearInterval(updater); to stop the interval again
 
 	function startScanning() {
 		Android.startScanning();
@@ -128,8 +127,6 @@
 		ctx1.drawImage(background, xOffset, yOffset, newWidth, newHeight);
 
 		drawTrackCircles(newWidth / 25, currentPosition, destination);
-		//drawBeaconCircles(newWidth / 35);
-		//drawCircles(xOffset + newWidth / 5, newHeight / 8, 4, newWidth / 25, currentPosition, destination);
 	}
 
 	function drawBeaconCircles(circleRadius) {

@@ -18,7 +18,7 @@
         $('.dataTable').on('click', 'tbody tr', function () {
             var outputImg = document.createElement('img');
             var rootUrl = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
-            //TODO Change id to be the selected office's id instead of hardcoded value 8.
+            //Gets the destination and floorplan from the row clicked. They are hardcoded in the html table. Ideally they would be loaded automatically from somewhere.
             var url = "https://bach2020.azurewebsites.net/Home/" +$(this).attr("data-floorplan")+ "?destination=" + $(this).attr("id") + "," + $(this).attr("data-floorplanID")
             console.log(url);
             var actualUrl = rootUrl + url

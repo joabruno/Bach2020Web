@@ -10,6 +10,7 @@ namespace BachelorsProjectWebApp.Controllers
 
     public class HomeController : Controller
     {
+        //Instantiating our DBMapper class. It contains CRUD operations for our database.
         DBMapper dbmapper = new DBMapper();
         public ActionResult Index()
         {
@@ -88,25 +89,40 @@ namespace BachelorsProjectWebApp.Controllers
         }
 
         
-
+        /// <summary>
+        /// Hit when using one of the search bars.
+        /// </summary>
+        /// <param name="Search">The input of the searchbar</param>
+        /// <returns></returns>
         public ActionResult FindOffice(string Search)
         {
             ViewBag.searchid = Search;
             return View("FindOffice");
         }
-
+        /// <summary>
+        /// Navigates to a paper page, which is not done at all.
+        /// </summary>
+        /// <param name="id">Id of the section clicked</param>
+        /// <returns></returns>
         public ActionResult Papers(string id)
         {
             ViewBag.papers = id;
             return View();
         }
 
-
+        /// <summary>
+        /// Simple page with uploadfloorplan form
+        /// </summary>
+        /// <returns></returns>
         public ActionResult UploadFloorPlan()
         {
-
             return View();
         }
+        /// <summary>
+        /// Hit when clicking "Upload floor plan" on the above page.
+        /// </summary>
+        /// <param name="fm">contains image url and name</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UploadFloorPlan(FloorModel fm)
         {
@@ -116,6 +132,11 @@ namespace BachelorsProjectWebApp.Controllers
 
             return RedirectToAction("EditPlan", new { id = floorplanid } );
         }
+        /// <summary>
+        /// Loads beacons and tracks from DB, and passes them with imgurl to the view.
+        /// </summary>
+        /// <param name="destination">Is a string that needs to be split and parsed to ints.</param>
+        /// <returns></returns>
         public ActionResult NavigationDemo(string destination)
         {
             string[] seperator = { "," };
@@ -128,6 +149,11 @@ namespace BachelorsProjectWebApp.Controllers
             ViewBag.demo_id = urlpars[0];
             return View(nm);
         }
+        /// <summary>
+        /// Loads beacons and tracks from DB, and passes them with imgurl to the view.
+        /// </summary>
+        /// <param name="destination">Is a string that needs to be split and parsed to ints.</param>
+        /// <returns></returns>
         public ActionResult Navigation(string destination)
         {
             string[] seperator = { "," };
